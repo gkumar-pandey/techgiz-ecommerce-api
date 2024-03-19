@@ -37,7 +37,7 @@ const comparePassword = async (password, existingPassword) => {
  * @param {Object} payload - Object contains user id and email.
  * @returns {String} - The generated JWT Token
  */
-const generateToken = async (payload) => {
+const generateToken = (payload) => {
   const SECRET_KEY = process.env.SECRET_KEY;
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
   return token;
@@ -54,9 +54,23 @@ const decodeToken = (token) => {
   return decodedToken;
 };
 
+/**
+ * @description 
+ * @param {*} decodedToken 
+ * @returns 
+ */
+const extractUserIdFromDecodedToken = (decodedToken) => {
+  if (decodeToken && decodeToken._id) {
+    return decodeToken._id;
+  } else {
+    throw new Error("Invalid or missing user id in token");
+  }
+};
+
 module.exports = {
   hashPassword,
   comparePassword,
   generateToken,
-  decodeToken
+  decodeToken,
+  extractUserIdFromDecodedToken
 };

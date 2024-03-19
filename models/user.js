@@ -18,11 +18,11 @@ const userSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    phoneNumber: {
+      type: String,
+    },
     address: [
       {
-        name: {
-          type: String,
-        },
         street: {
           type: String,
         },
@@ -38,15 +38,12 @@ const userSchema = mongoose.Schema(
         district: {
           type: String,
         },
-        phoneNumber: {
-          type: String,
-        },
       },
     ],
   },
   { timestamp: true }
 );
 
-const Users = mongoose.model("Users", userSchema);
+const User = mongoose.model("User", userSchema);
 
-module.exports = Users;
+module.exports = User;
