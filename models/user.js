@@ -18,11 +18,12 @@ const userSchema = mongoose.Schema(
       type: String,
       require: true,
     },
-    phoneNumber: {
-      type: String,
-    },
+
     address: [
       {
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+        },
         street: {
           type: String,
         },
@@ -38,10 +39,13 @@ const userSchema = mongoose.Schema(
         district: {
           type: String,
         },
+        phoneNumber: {
+          type: String,
+        },
       },
     ],
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
