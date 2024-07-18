@@ -1,15 +1,16 @@
-const express = require("express");
-const dotenv = require("dotenv");
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import helmet from "helmet";
+
 const { routeNotFound } = require("./middleware");
-const routes = require("./routes");
-const cors = require("cors");
-const helmet = require("helmet");
-const connectDb = require("./config/db");
+import routes from "./routes";
+import connectDb from "./config/db.js";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT | 3000;
+const PORT: Number = Number(process.env.PORT) | 3000;
 
 connectDb();
 

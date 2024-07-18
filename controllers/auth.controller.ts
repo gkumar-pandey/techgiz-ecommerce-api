@@ -1,10 +1,10 @@
-const User = require("../models/user");
-const {
+import User from "../models/user";
+import {
   createUserValidation,
   loginUserValidation,
-} = require("../services/validation");
-const { ValidationError } = require("joi");
-const { hashPassword, generateToken, comparePassword } = require("../utils");
+} from "../services/validation";
+import { ValidationError } from "joi";
+import { comparePassword, generateToken, hashPassword } from "../utils";
 
 /**
  * @description Handles user signup by validating user data by predefined user schema with joi, hash the password create a new account and generate an authentication token.
@@ -13,7 +13,7 @@ const { hashPassword, generateToken, comparePassword } = require("../utils");
  * @param {Object} res - Express response object containing user data and token
  * @returns - Express res or Error
  */
-const signupHandler = async (req, res) => {
+const signupHandler = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
     // validate user schema
@@ -95,4 +95,4 @@ const loginHandler = async (req, res) => {
   }
 };
 
-module.exports = { signupHandler, loginHandler };
+export { signupHandler, loginHandler };

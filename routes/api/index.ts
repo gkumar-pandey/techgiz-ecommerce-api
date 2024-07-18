@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const routes = express.Router();
 
 routes.use("/v1", require("./v1"));
 
-module.exports = routes;
+export default routes;

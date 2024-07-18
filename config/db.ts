@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const connectDb = async () => {
   try {
@@ -6,11 +6,12 @@ const connectDb = async () => {
     const DB_PASSWORD = process.env.DB_PASSWORD;
     const DB_URL = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.nmh3pcs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
     const connect = await mongoose.connect(DB_URL);
-    console.log("Database connected successfully..");
+    if (connect) {
+      console.log("Database connected successfully..");
+    }
   } catch (error) {
     console.error(error);
-    
-  }  
+  }
 };
 
-module.exports = connectDb;
+export default connectDb;
