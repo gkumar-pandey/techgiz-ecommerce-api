@@ -1,10 +1,11 @@
-import User from "../models/user";
+import User from '../models/user';
 import {
   createUserValidation,
   loginUserValidation,
-} from "../services/validation";
-import { ValidationError } from "joi";
-import { comparePassword, generateToken, hashPassword } from "../utils";
+} from '../schemas/user.schema';
+import { ValidationError } from 'joi';
+import { comparePassword, generateToken, hashPassword } from '../utils';
+import { Request, Response } from 'express';
 
 /**
  * @description Handles user signup by validating user data by predefined user schema with joi, hash the password create a new account and generate an authentication token.
@@ -13,7 +14,7 @@ import { comparePassword, generateToken, hashPassword } from "../utils";
  * @param {Object} res - Express response object containing user data and token
  * @returns - Express res or Error
  */
-const signupHandler = async (req: Request, res: Response) => {
+export const signupHandler = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
     // validate user schema
@@ -23,10 +24,10 @@ const signupHandler = async (req: Request, res: Response) => {
     if (isUserExist) {
       return res
         .status(400)
-        .json({ success: false, message: "User Already exists" });
+        .json({ success: false, message: 'User Already exists' });
     }
     // hash plain text password
-    const hashedPass = await hashPassword(userData.password);
+    const hashedPass = await hashPassword(userData?.password);
     // create user
     const newUser = new User({ ...userData, password: hashedPass });
     await newUser.save();
@@ -35,14 +36,14 @@ const signupHandler = async (req: Request, res: Response) => {
     newUser.password = undefined;
     return res
       .status(201)
-      .json({ message: "sign up successfully", user: newUser, token });
+      .json({ message: 'sign up successfully', user: newUser, token });
   } catch (error) {
     if (error instanceof ValidationError) {
       return res.status(400).send({ message: error.message });
     }
     res
       .status(500)
-      .json({ success: false, message: "Internal server error.", error });
+      .json({ success: false, message: 'Internal server error.', error });
     throw error;
   }
 };
@@ -54,7 +55,7 @@ const signupHandler = async (req: Request, res: Response) => {
  * @param {Object} res -Express response containing success message, token and user data after login.
  * @returns Express response or error message
  */
-const loginHandler = async (req, res) => {
+export const loginHandler = async (req: Request, res: Response) => {
   try {
     const userData = req.body;
     await loginUserValidation.validateAsync(userData);
@@ -62,37 +63,38 @@ const loginHandler = async (req, res) => {
     if (!foundUser) {
       return res
         .status(404)
-        .json({ success: false, message: "User not exist" });
+        .json({ success: false, message: 'User not exist' });
     }
     // check password matched
     const isPasswordMatched = await comparePassword(
       userData.password,
-      foundUser.password
+      String(foundUser.password)
     );
     if (!isPasswordMatched) {
       return res
         .status(400)
-        .json({ success: false, message: "Password not matched" });
+        .json({ success: false, message: 'Password not matched' });
     }
     // generate token
-    const token = generateToken({ email: foundUser.email, _id: foundUser._id });
+    const token = generateToken({
+      email: foundUser.email,
+      _id: String(foundUser._id),
+    });
     // hide password
     foundUser.password = undefined;
     return res.status(200).json({
       success: true,
-      message: "Login successfully",
+      message: 'Login successfully',
       user: foundUser,
       token,
     });
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof ValidationError) {
       return res.status(400).json({ error: error.message });
     }
     res
       .status(500)
-      .json({ message: "Internal server error", error, success: false });
+      .json({ message: 'Internal server error', error, success: false });
     throw new Error(error);
   }
 };
-
-export { signupHandler, loginHandler };
