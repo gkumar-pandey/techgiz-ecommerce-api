@@ -1,9 +1,11 @@
-import express from "express";
+import express from 'express';
+
+import publicRoute from './public';
+import privateRoute from './private';
 
 const routes = express.Router();
 
-import v1 from "./v1";
-
-routes.use("/v1", v1);
+routes.use('/public', publicRoute);
+routes.use('/private', privateRoute);
 
 export default routes;
