@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const connectDb = async () => {
   try {
@@ -7,7 +7,12 @@ const connectDb = async () => {
     const DB_URL = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.nmh3pcs.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
     const connect = await mongoose.connect(DB_URL);
     if (connect) {
-      console.log("Database connected successfully..");
+      console.log('MongoDB connected successfully');
+      console.log({
+        Host: connect.connection.host,
+        Name: connect.connection.name,
+        Database: connect.connection.db.databaseName,
+      });
     }
   } catch (error) {
     console.error(error);

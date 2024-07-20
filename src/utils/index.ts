@@ -51,7 +51,7 @@ export const generateToken = (payload: any) => {
  * @param {String} token - The JWT token to decode.
  * @returns {Object} - The decoded payload.
  */
-export const decodeToken = (token: string) => {
+export const decodeToken = (token: string)=> {
   const SECRET_KEY = String(process.env.SECRET_KEY);
   const decodedToken = jwt.verify(token, SECRET_KEY);
   return decodedToken;
@@ -63,8 +63,8 @@ export const decodeToken = (token: string) => {
  * @returns
  */
 export const extractUserIdFromDecodedToken = (decodedToken: any) => {
-  if (decodeToken && decodeToken?._id) {
-    return decodeToken?._id;
+  if (decodedToken && decodedToken?._id) {
+    return decodedToken?._id;
   } else {
     throw new Error("Invalid or missing user id in token");
   }
