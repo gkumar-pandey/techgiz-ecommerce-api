@@ -1,3 +1,3 @@
-import { loginHandler, signupHandler } from './auth.controller';
+import { loginHandler, signupHandler } from './authControllers/auth.controller';
 
 export { loginHandler, signupHandler };
