@@ -1,10 +1,10 @@
-import User from '../models/user';
+import User from '../../models/user';
 import {
   createUserValidation,
   loginUserValidation,
-} from '../schemas/user.schema';
+} from '../../schemas/user.schema';
 import { ValidationError } from 'joi';
-import { comparePassword, generateToken, hashPassword } from '../utils';
+import { comparePassword, generateToken, hashPassword } from '../../utils';
 import { Request, Response } from 'express';
 
 /**
